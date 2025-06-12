@@ -1,15 +1,14 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using DemoDocker_Infrastructure.Data;
 
-namespace DemoDocker_Infrastructure.Extensions;
+namespace DemoDocker_Infrastructure.Data;
 
-public static class ServiceCollectionExtensions
+public static class DataContextFactory
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<ApplicationDbContext>(options =>
+        services.AddDbContext<DataContext>(options =>
             options.UseNpgsql(configuration.GetConnectionString("DefaultConnection")));
 
         return services;

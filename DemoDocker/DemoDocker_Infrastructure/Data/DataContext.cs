@@ -1,11 +1,11 @@
-using Microsoft.EntityFrameworkCore;
 using DemoDocker_Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace DemoDocker_Infrastructure.Data
 {
-    public class ApplicationDbContext : DbContext
+    public class DataContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
+        public DataContext(DbContextOptions<DataContext> options)
             : base(options)
         {
         }
