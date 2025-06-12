@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker_Infrastructure",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker_Application", "DemoDocker_Application\DemoDocker_Application.csproj", "{80516199-DE57-4C48-ABDF-D9ADA49F38F8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker_Common", "DemoDocker_Common\DemoDocker_Common.csproj", "{108441C8-74ED-4879-A277-50210AE9C7B9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{80516199-DE57-4C48-ABDF-D9ADA49F38F8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{80516199-DE57-4C48-ABDF-D9ADA49F38F8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{80516199-DE57-4C48-ABDF-D9ADA49F38F8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{108441C8-74ED-4879-A277-50210AE9C7B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{108441C8-74ED-4879-A277-50210AE9C7B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{108441C8-74ED-4879-A277-50210AE9C7B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{108441C8-74ED-4879-A277-50210AE9C7B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DemoDocker_Application\DemoDocker_Application.csproj" />
+    <ProjectReference Include="..\DemoDocker_Common\DemoDocker_Common.csproj" />
     <ProjectReference Include="..\DemoDocker_Domain\DemoDocker_Domain.csproj" />
     <ProjectReference Include="..\DemoDocker_Infrastructure\DemoDocker_Infrastructure.csproj" />
   </ItemGroup>
