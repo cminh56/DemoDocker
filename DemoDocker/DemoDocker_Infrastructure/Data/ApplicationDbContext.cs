@@ -1,5 +1,5 @@
-using DemoDocker_Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using DemoDocker_Domain.Entities;
 
 namespace DemoDocker_Infrastructure.Data
 {
