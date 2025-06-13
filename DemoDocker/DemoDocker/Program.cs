@@ -59,7 +59,7 @@ app.UseSwaggerUI();
 // Use CORS before other middleware
 app.UseCors();
 
-// app.UseHttpsRedirection(); 
+ app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 
