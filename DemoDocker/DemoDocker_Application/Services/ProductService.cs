@@ -1,7 +1,4 @@
-using AutoMapper;
-using DemoDocker_Common;
 using DemoDocker_Common.Constants;
-using DemoDocker_Common.DTO;
 using DemoDocker_Domain.Entities;
 using DemoDocker_Domain.IRepositories;
 
@@ -10,56 +7,54 @@ namespace DemoDocker_Application.Services
     public class ProductService 
     {
         private readonly IProductRepository _productRepository;
-        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository, IMapper mapper)
+        public ProductService(IProductRepository productRepository)
         {
             _productRepository = productRepository;
-            _mapper = mapper;
         }
 
-        public async Task<IEnumerable<ProductDTO>> GetAllAsync()
+        public async Task<IEnumerable<Product>> GetAllAsync()
         {
-            var products = await _productRepository.GetAllAsync();
-            return _mapper.Map<IEnumerable<ProductDTO>>(products);
+            return await _productRepository.GetAllAsync();
         }
 
-        public async Task<ProductDTO?> GetByIdAsync(Guid id)
+        public async Task<Product?> GetByIdAsync(Guid id)
         {
-            var product = await _productRepository.GetByIdAsync(id);
-            return product == null ? null : _mapper.Map<ProductDTO>(product);
+            return await _productRepository.GetByIdAsync(id);
         }
 
-        public async Task<ProductDTO> AddAsync(CreateProductDTO dto)
+        public async Task<Product> AddAsync(Product product)
         {
             // Validate product
-            if (string.IsNullOrWhiteSpace(dto.Name))
+            if (string.IsNullOrWhiteSpace(product.Name))
                 throw new ArgumentException(AppConstants.Validation.RequiredName);
 
-            if (dto.Price <= 0)
+            if (product.Price <= 0)
                 throw new ArgumentException(AppConstants.Validation.InvalidPrice);
 
-            var product = _mapper.Map<Product>(dto);
             await _productRepository.AddAsync(product);
-            return _mapper.Map<ProductDTO>(product);
+            return product;
         }
 
-        public async Task<ProductDTO> UpdateAsync(Guid id, UpdateProductDTO dto)
+        public async Task<Product> UpdateAsync(Guid id, Product product)
         {
             // Validate product
-            if (string.IsNullOrWhiteSpace(dto.Name))
+            if (string.IsNullOrWhiteSpace(product.Name))
                 throw new ArgumentException(AppConstants.Validation.RequiredName);
 
-            if (dto.Price <= 0)
+            if (product.Price <= 0)
                 throw new ArgumentException(AppConstants.Validation.InvalidPrice);
 
             var existingProduct = await _productRepository.GetByIdAsync(id);
             if (existingProduct == null)
                 throw new KeyNotFoundException(string.Format(AppConstants.Validation.ProductNotFound, id));
 
-            _mapper.Map(dto, existingProduct);
+            existingProduct.Name = product.Name;
+            existingProduct.Description = product.Description;
+            existingProduct.Price = product.Price;
+            
             _productRepository.Update(existingProduct);
-            return _mapper.Map<ProductDTO>(existingProduct);
+            return existingProduct;
         }
 
         public async Task RemoveAsync(Guid id)

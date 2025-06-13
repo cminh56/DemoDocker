@@ -3,6 +3,8 @@ using DemoDocker_Application.Services;
 using DemoDocker_Common.DTO;
 using DemoDocker_Common.Constants;
 using DemoDocker_Common.Common;
+using AutoMapper;
+using DemoDocker_Domain.Entities;
 
 namespace DemoDocker.Controllers
 {
@@ -11,10 +13,12 @@ namespace DemoDocker.Controllers
     public class ProductController : ControllerBase
     {
         private readonly ProductService _productService;
+        private readonly IMapper _mapper;
 
-        public ProductController(ProductService productService)
+        public ProductController(ProductService productService, IMapper mapper)
         {
             _productService = productService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -23,7 +27,8 @@ namespace DemoDocker.Controllers
             try
             {
                 var products = await _productService.GetAllAsync();
-                return Ok(new ApiResponse<IEnumerable<ProductDTO>>(200, ResponseKeys.Success, products));
+                var productDtos = _mapper.Map<IEnumerable<ProductDTO>>(products);
+                return Ok(new ApiResponse<IEnumerable<ProductDTO>>(200, ResponseKeys.Success, productDtos));
             }
             catch (Exception ex)
             {
@@ -41,7 +46,8 @@ namespace DemoDocker.Controllers
                     return NotFound(new ApiResponse<string>(404, ResponseKeys.NotFound, 
                         string.Format(AppConstants.Validation.ProductNotFound, id)));
 
-                return Ok(new ApiResponse<ProductDTO>(200, ResponseKeys.Success, product));
+                var productDto = _mapper.Map<ProductDTO>(product);
+                return Ok(new ApiResponse<ProductDTO>(200, ResponseKeys.Success, productDto));
             }
             catch (Exception ex)
             {
@@ -54,9 +60,12 @@ namespace DemoDocker.Controllers
         {
             try
             {
-                var product = await _productService.AddAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = product.Id }, 
-                    new ApiResponse<ProductDTO>(201, ResponseKeys.Created, product));
+                var product = _mapper.Map<Product>(dto);
+                var createdProduct = await _productService.AddAsync(product);
+                var productDto = _mapper.Map<ProductDTO>(createdProduct);
+                
+                return CreatedAtAction(nameof(GetById), new { id = productDto.Id }, 
+                    new ApiResponse<ProductDTO>(201, ResponseKeys.Created, productDto));
             }
             catch (ArgumentException ex)
             {
@@ -73,8 +82,11 @@ namespace DemoDocker.Controllers
         {
             try
             {
-                var product = await _productService.UpdateAsync(id, dto);
-                return Ok(new ApiResponse<ProductDTO>(200, ResponseKeys.Updated, product));
+                var product = _mapper.Map<Product>(dto);
+                var updatedProduct = await _productService.UpdateAsync(id, product);
+                var productDto = _mapper.Map<ProductDTO>(updatedProduct);
+                
+                return Ok(new ApiResponse<ProductDTO>(200, ResponseKeys.Updated, productDto));
             }
             catch (KeyNotFoundException ex)
             {
