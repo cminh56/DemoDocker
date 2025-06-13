@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.14.36203.30
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker_API", "DemoDocker\DemoDocker_API.csproj", "{C7089A72-9DF4-4E55-A7B4-A2CA3685FA81}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker", "DemoDocker\DemoDocker.csproj", "{C7089A72-9DF4-4E55-A7B4-A2CA3685FA81}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DemoDocker_Domain", "DemoDocker_Domain\DemoDocker_Domain.csproj", "{14CE776E-8DB7-4E1A-B2B8-EC3C2EE0B024}"
 EndProject
