@@ -1,4 +1,5 @@
 using DemoDocker_Application.Services;
+using DemoDocker_Infrastructure.Mappings;
 using DemoDocker_Domain.IRepositories;
 using DemoDocker_Infrastructure.Data;
 using DemoDocker_Infrastructure.Repositories;
@@ -19,6 +20,9 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
+// Add AutoMapper
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
@@ -62,12 +66,5 @@ app.UseCors();
  app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
-
-// Apply migrations automatically (for development)
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<DataContext>();
-    db.Database.Migrate();
-}
 
 app.Run();

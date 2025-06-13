@@ -1,3 +1,4 @@
+using AutoMapper;
 using DemoDocker_Common;
 using DemoDocker_Common.Constants;
 using DemoDocker_Common.DTO;
@@ -9,22 +10,24 @@ namespace DemoDocker_Application.Services
     public class ProductService 
     {
         private readonly IProductRepository _productRepository;
+        private readonly IMapper _mapper;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, IMapper mapper)
         {
             _productRepository = productRepository;
+            _mapper = mapper;
         }
 
         public async Task<IEnumerable<ProductDTO>> GetAllAsync()
         {
             var products = await _productRepository.GetAllAsync();
-            return products.Select(MapToDTO);
+            return _mapper.Map<IEnumerable<ProductDTO>>(products);
         }
 
         public async Task<ProductDTO?> GetByIdAsync(Guid id)
         {
             var product = await _productRepository.GetByIdAsync(id);
-            return product == null ? null : MapToDTO(product);
+            return product == null ? null : _mapper.Map<ProductDTO>(product);
         }
 
         public async Task<ProductDTO> AddAsync(CreateProductDTO dto)
@@ -36,15 +39,9 @@ namespace DemoDocker_Application.Services
             if (dto.Price <= 0)
                 throw new ArgumentException(AppConstants.Validation.InvalidPrice);
 
-            var product = new Product
-            {
-                Name = dto.Name,
-                Description = dto.Description,
-                Price = dto.Price
-            };
-
+            var product = _mapper.Map<Product>(dto);
             await _productRepository.AddAsync(product);
-            return MapToDTO(product);
+            return _mapper.Map<ProductDTO>(product);
         }
 
         public async Task<ProductDTO> UpdateAsync(Guid id, UpdateProductDTO dto)
@@ -60,12 +57,9 @@ namespace DemoDocker_Application.Services
             if (existingProduct == null)
                 throw new KeyNotFoundException(string.Format(AppConstants.Validation.ProductNotFound, id));
 
-            existingProduct.Name = dto.Name;
-            existingProduct.Description = dto.Description;
-            existingProduct.Price = dto.Price;
-
+            _mapper.Map(dto, existingProduct);
             _productRepository.Update(existingProduct);
-            return MapToDTO(existingProduct);
+            return _mapper.Map<ProductDTO>(existingProduct);
         }
 
         public async Task RemoveAsync(Guid id)
@@ -75,19 +69,6 @@ namespace DemoDocker_Application.Services
                 throw new KeyNotFoundException(string.Format(AppConstants.Validation.ProductNotFound, id));
 
             _productRepository.Remove(product);
-        }
-
-        private static ProductDTO MapToDTO(Product product)
-        {
-            return new ProductDTO
-            {
-                Id = product.Id,
-                Name = product.Name,
-                Description = product.Description,
-                Price = product.Price,
-                CreatedDate = product.CreatedDate,
-                UpdateDate = product.UpdateDate
-            };
         }
     }
 } 
